@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Trainee Guide — 17 Aug 2026 — Networking Basics</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;max-width:780px;margin:24px auto;padding:0 16px;line-height:1.55;color:#222}
+h1{color:#14532d;border-bottom:3px solid #16a34a;padding-bottom:6px}
+h2{color:#14532d;margin-top:28px}
+table{border-collapse:collapse;width:100%}th,td{border:1px solid #ccc;padding:6px 10px;text-align:left}
+th{background:#f0fdf4}
+pre{background:#f3f4f6;padding:10px;border-radius:6px;overflow-x:auto}
+code{background:#f3f4f6;padding:1px 5px;border-radius:4px}
+.box{background:#f0fdf4;border-left:5px solid #16a34a;padding:8px 14px;margin:16px 0}
+.warn{background:#fef3c7;border-left:5px solid #d97706;padding:8px 14px;margin:16px 0}
+ul.check{list-style:none;padding-left:0}
+ul.check li::before{content:"\2610  ";color:#16a34a}
+</style>
+</head>
+<body>
+<h1>Day 6 — Networking Basics (Week 2 starts)</h1>
+<p><strong>Date:</strong> Monday, 17 Aug 2026 &middot; <strong>Where:</strong> Lab Ubuntu VM only &middot; <strong>Time:</strong> about 6 hours</p>
+
+<h2>Plan for the day</h2>
+<table>
+<tr><th>Part</th><th>Time</th><th>What</th></tr>
+<tr><td>1</td><td>1 h</td><td>Simple networking ideas (no deep theory)</td></tr>
+<tr><td>2</td><td>2 h</td><td>Hands-on: look at your VM network</td></tr>
+<tr><td>3</td><td>1.5 h</td><td>Small labs: CIDR + path to Nginx + error words</td></tr>
+<tr><td>4</td><td>30 min</td><td>Show your work + questions</td></tr>
+<tr><td>5</td><td>15 min</td><td>Daily update</td></tr>
+</table>
+
+<h2>Part 1 — Learn these 7 things only (1 h)</h2>
+<ol>
+<li><strong>IP address</strong> = the computer's address on the network</li>
+<li><strong>Port</strong> = the door number for one service (web: 80/443)</li>
+<li><strong>Subnet / CIDR</strong> = a group of addresses (<code>192.168.1.0/24</code>)</li>
+<li><strong>Gateway</strong> = the exit door to other networks</li>
+<li><strong>Route</strong> = the path the packet is told to take</li>
+<li><strong>TCP</strong> = reliable (web, SSH); <strong>UDP</strong> = faster, less checking (DNS often)</li>
+<li><strong>Private IP</strong> (<code>10.x</code>, <code>192.168.x</code>) stays inside; public IP is on the internet</li>
+</ol>
+<p>In <code>notes/2026-08-17.md</code>: What is an IP? What is a port? Why can <code>ping</code> work but a website still fail?</p>
+
+<h2>Part 2 — Hands-on (2 h)</h2>
+<p>After each command write one line: "This shows me …"</p>
+<pre>ip addr            # my IP
+ip route           # my gateway
+ping -c 4 127.0.0.1
+ping -c 4 8.8.8.8  # if blocked, tell mentor and skip
+ss -lntup          # what is listening (find port 80 / Nginx)
+curl -v http://127.0.0.1/</pre>
+<p>If Nginx is not running: <code>sudo systemctl start nginx</code> (ask if stuck). Optional: <code>traceroute 8.8.8.8</code> if available.</p>
+
+<h2>Part 3 — Small labs (1.5 h)</h2>
+<ol>
+<li><strong>CIDR practice:</strong> for 2 mentor-given CIDRs write network address, broadcast address, and roughly how many usable hosts. Explain <code>/24</code> in your own words.</li>
+<li><strong>Path to Nginx:</strong> write the request path in simple steps (curl → 127.0.0.1:80 → process from <code>ss</code> → Nginx answers).</li>
+<li><strong>Two error words:</strong> cause or observe both — <strong>connection refused</strong> (nothing listening) and <strong>timeout</strong> (packets don't come back). One example of each in notes.</li>
+</ol>
+<p>Optional, only if time and mentor says OK: <code>sudo tcpdump -i lo -n -c 20 tcp port 80</code> while curling.</p>
+
+<h2>Part 4 — Show your work (30 min)</h2>
+<p>Show: IP + gateway, the <code>ss</code> line for the web service, CIDR answers, path-to-Nginx notes, refused vs timeout. Be ready for: What does <code>/24</code> mean? Refused vs timeout? Why can ping work but HTTP fail? What does a gateway do? One TCP and one UDP example.</p>
+
+<h2>Part 5 — Daily update (15 min)</h2>
+<pre>git checkout -b day06-networking
+git add notes/2026-08-17.md
+git commit -m "Add networking day notes"</pre>
+
+<h2>Done when</h2>
+<ul class="check">
+<li>You can say what IP and port mean in simple words</li>
+<li>You ran <code>ip</code>, <code>ss</code>, <code>ping</code>, <code>curl</code> and saved notes</li>
+<li>CIDR practice finished; path to web service written</li>
+<li>You know refused vs timeout</li>
+<li>Daily update + Git commit done</li>
+</ul>
+</body>
+</html>
